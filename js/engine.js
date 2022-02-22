@@ -51,17 +51,18 @@ class Enguine {
         // this.ctx.fill();
         // this.ctx.stroke();
 
-        let circle = this.char.getCircle();
+        let circle = this.char.GetCircle();
 
-        let p1 = this.char.getPosition()[circle.idx[0]]
-        let p2 = this.char.getPosition()[circle.idx[1]]
+        // let p1 = this.char.getPosition()[circle.idx[0]]
+        // let p2 = this.char.getPosition()[circle.idx[1]]
 
         this.ctx.beginPath();
-        this.ctx.arc((p1.x+p2.x)/2+this.char.x, (p1.y+p2.y)/2+this.char.y, circle.r/2, 0, Math.PI * 2);
+        console.log(circle);
+        this.ctx.arc(circle.middle.x, circle.middle.y, circle.radius, 0, Math.PI * 2);
         this.ctx.stroke();
 
         setTimeout(() => {
-            this.ddsada();
+            // this.ddsada();
         }, 1000/this.fps);
     }
     draw() {

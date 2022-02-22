@@ -1,3 +1,48 @@
+class Vector2 {
+    constructor(x=0, y=0) {
+        this.x = x;
+        this.y = y;
+    }
+    Get(){
+        return this;
+    }
+    Set(v){
+        this.x = v.x;
+        this.y = v.y;
+    }
+    Plus(v1, v2) {
+        return new Vector2(v2.x+v1.x, v2.y+v1.y);
+    }
+    Minus(v1, v2) {
+        return new Vector2(v2.x-v1.x, v2.y-v1.y);
+    }
+    Multiple(v1,d) {
+        return new Vector2(v1.x*d, v2.y*2);
+    }
+    Devide(v1, d) {
+        return new Vector2(v1.x/d, v1.y/2);
+    }
+    Distance(v1, v2) {
+        return Math.sqrt(Math.pow(v2.x-v1.x,2)+Math.pow(v2.y-v1.y,2));
+    }
+}
+class equation {
+    constructor() {
+        this.degree;
+        this.a;
+        this.c;
+    }
+}
+class QuadraticEquation extends equation {
+    constructor(){
+
+    }
+    getData(x,y,x1,y1){
+        
+        return 
+    }
+}
+
 class SpriteList {
     constructor() {
 
@@ -38,24 +83,62 @@ class Sprite {
     getPosition() {
         return this.position;
     }
-    getCircle() {
-        let r = 0;
-        let idx = [];
-        for (let i=0; i<this.getPosition().length-1; i++) {
-            for (let j=i+1; j<this.getPosition().length; j++) {
-                const r2 = this.distanceD2D(this.getPosition()[i].x,this.getPosition()[i].y,this.getPosition()[j].x,this.getPosition()[j].y);
-                if (r<r2) {
-                    r=r2;
-                    idx = [];
-                    idx.push(i);
-                    idx.push(j);
+    GetCircle(){
+        let middle = new Vector2();
+        let radius = 0;
+        let length = this.position.length;
+        for (let i=0; i<length; i++) {
+            for (let j=i+1; j<length; j++) {
+                if (new Vector2().Distance(this.position[i], this.position[j]) > radius) {
+                    radius = new Vector2().Distance(this.position[i], this.position[j]);
+                    middle.Set( new Vector2().Devide(new Vector2().Plus(this.position[i], this.position[j]), 2) );
                 }
             }
         }
-        return {r:r, idx:idx};
+    
+        if (!this.IsOuterCircle(middle, radius)) {
+            // 임의의 삼각형 외접원 중 가장 작은 원을 구한다.
+            radius = float.maxValue;
+    
+            for (let i=0; i<length; i++) {
+                for (let j=i+1; j<length; j++) {
+                    for (let k=j+1; k<length; k++) {
+                        const mid1 = new Vector2().Devide(Vector2(this.position[i] + this.position[j]), 2);
+                        const mid2 = new Vector2().Devide(Vector2(this.position[j] + this.position[k]), 2);
+    
+                        const grad1 = this.Gradient(this.position[i], this.position[j]);
+                        const grad2 = this.Gradient(this.position[j], this.position[k]);
+                        const tempX = (grad2*mid2.x - grad1*mid1.x + mid2.y - mid1.y)/(grad2 - grad1);
+                        const tempY = grad1*(tempX - mid1.x) + mid1.y;
+    
+                        const tempMiddle = new Vector2(tempX, tempY);
+                        const tempRadius = new Vector2().Distance(tempMiddle, this.position[i]);
+                        if (tempRadius < radius && this.IsOuterCircle(tempMiddle, tempRadius)) { 
+                            radius = tempRadius;
+                            middle = tempMiddle; 
+                        }
+                    }
+                }
+            }
+        }
+        
+        return {radius:radius, middle:middle};
     }
     distanceD2D(x,y,x1,y1){
         return Math.sqrt(Math.pow(x1-x,2)+Math.pow(y1-y,2));
     }
+
+    IsOuterCircle(mid, rad) {//vector float
+        this.position.forEach(vec => {
+            if (new Vector2().Distance(vec, mid) > rad) return false;
+        });
+        // foreach (Vector2 vec in pos) if (new Vector2().Distance(vec, mid) > rad) return false;
+        return true;
+    }
+
+    Gradient(pos1, pos2) { 
+        return (pos2.y - pos1.y)/(pos2.x - pos1.x); 
+    }
     
 }
+
