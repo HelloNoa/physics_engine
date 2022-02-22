@@ -57,12 +57,12 @@ class Enguine {
         // let p2 = this.char.getPosition()[circle.idx[1]]
 
         this.ctx.beginPath();
-        console.log(circle);
-        this.ctx.arc(circle.middle.x, circle.middle.y, circle.radius, 0, Math.PI * 2);
+        // console.log(circle);
+        this.ctx.arc(circle.middle.x+this.char.x, circle.middle.y+this.char.y, circle.radius, 0, Math.PI * 2);
         this.ctx.stroke();
 
         setTimeout(() => {
-            // this.ddsada();
+            this.ddsada();
         }, 1000/this.fps);
     }
     draw() {
