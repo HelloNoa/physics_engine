@@ -62,7 +62,7 @@ class Enguine {
         this.ctx.stroke();
 
         setTimeout(() => {
-            this.ddsada();
+            // this.ddsada();
         }, 1000/this.fps);
     }
     draw() {

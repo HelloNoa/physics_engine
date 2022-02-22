@@ -48,8 +48,8 @@ function GetCircle(){
         for (let i=0; i<length; i++) {
             for (let j=i+1; j<length; j++) {
                 for (let k=j+1; k<length; k++) {
-                    const mid1 = Vector2.Devide(Vector2(pos[i] + pos[j]), 2);
-                    const mid2 = Vector2.Devide(Vector2(pos[j] + pos[k]), 2);
+                    const mid1 = Vector2.Devide(new Vector2().Plus(pos[i] + pos[j]), 2);
+                    const mid2 = Vector2.Devide(new Vector2().Plus(pos[j] + pos[k]), 2);
 
                     const grad1 = Gradient(pos[i], pos[j]);
                     const grad2 = Gradient(pos[j], pos[k]);
