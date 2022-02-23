@@ -27,6 +27,15 @@ class Enguine {
             this.ddsada();
         },0);
         this.event();
+        this.layer = new Layer('default');
+        this.layer.AddLayer('a');
+        this.layer.AddLayer('b');
+        this.layer.AddLayer('e');
+        this.layer.AddLayer('f');
+        this.layer.AddLayer('g');
+        this.layer.AddLayer('h');
+        this.layer.EffectOneLayer('a','b');
+        console.log(this.layer.GetLayer());
     }
     ddsada() {
         this.key.left && this.char.x--;
