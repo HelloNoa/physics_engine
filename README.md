@@ -12,6 +12,10 @@ Install npm package globally
    or
         
     npm install static-server
+    
+   or
+   
+    npm install
 Go to the folder you want to serve
 
 # Run the server 
