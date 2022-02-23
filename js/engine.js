@@ -1,4 +1,7 @@
-class Enguine {
+import {Sprite}  from './sprite.js';
+import {Layer} from './other.js';
+
+export class Enguine {
     constructor (id) {
         this.ratio = 1;
         this.fps = 60;

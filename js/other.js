@@ -1,4 +1,4 @@
-class Layer {
+export class Layer {
     constructor(arg) {
         this.layer=[];
         this.type=[];
@@ -83,4 +83,3 @@ class Level {
         this.level = level;
     }
 }
-
