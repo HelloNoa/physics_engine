@@ -3,13 +3,21 @@ physics_engine
 
 Getting started
 
-Install node.js
+# **Install node.js**
+
 Install npm package globally 
+
     npm -g install static-server
-        or
+    
+   or
+        
     npm install static-server
 Go to the folder you want to serve
-Run the server 
+
+# Run the server 
+
     static-server
-        or
+    
+   or
+   
     node server.js
