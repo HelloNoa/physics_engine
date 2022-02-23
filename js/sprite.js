@@ -19,7 +19,7 @@ class Vector2 {
     Multiple(v1,d) {
         return new Vector2(v1.x*d, v2.y*2);
     }
-    Devide(v1, d) {
+    Divide(v1, d) {
         return new Vector2(v1.x/d, v1.y/2);
     }
     Distance(v1, v2) {
@@ -91,10 +91,18 @@ class Sprite {
             for (let j=i+1; j<length; j++) {
                 if (new Vector2().Distance(this.position[i], this.position[j])/2 > radius) {
                     radius = new Vector2().Distance(this.position[i], this.position[j])/2;
+<<<<<<< HEAD
                     middle.Set( new Vector2().Devide(new Vector2().Plus(this.position[i], this.position[j]), 2) );
                 }
             }
         }
+=======
+                    middle.Set( new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2) );
+                }
+            }
+        }
+
+>>>>>>> f2ace6ec4eb05939dc6064bde77a28171f5b309f
         if (!this.IsOuterCircle(middle, radius)) {
             // 임의의 삼각형 외접원 중 가장 작은 원을 구한다.
             // radius = float.maxValue;
@@ -103,23 +111,33 @@ class Sprite {
             for (let i=0; i<length; i++) {
                 for (let j=i+1; j<length; j++) {
                     for (let k=j+1; k<length; k++) {
+<<<<<<< HEAD
                         const mid1 = new Vector2().Devide(new Vector2().Plus(this.position[i], this.position[j]), 2);
                         const mid2 = new Vector2().Devide(new Vector2().Plus(this.position[j], this.position[k]), 2);
     
                         const grad1 = -1*this.Gradient(this.position[i], this.position[j]);
                         const grad2 = -1*this.Gradient(this.position[j], this.position[k]);
                         const tempX = (grad2*mid2.x - grad1*mid1.x + mid2.y - mid1.y)/(grad2 - grad1);
+=======
+                        const mid1 = new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2);
+                        const mid2 = new Vector2().Divide(new Vector2().Plus(this.position[j], this.position[k]), 2);
+    
+                        const grad1 = -1/this.Gradient(this.position[i], this.position[j]);
+                        const grad2 = -1/this.Gradient(this.position[j], this.position[k]);
+                        const tempX = (grad2*mid2.x - grad1*mid1.x - mid2.y + mid1.y)/(grad2 - grad1);
+>>>>>>> f2ace6ec4eb05939dc6064bde77a28171f5b309f
                         const tempY = grad1*(tempX - mid1.x) + mid1.y;
     
                         const tempMiddle = new Vector2(tempX, tempY);
                         const tempRadius = new Vector2().Distance(tempMiddle, this.position[i]);
-                        if (tempRadius < radius && this.IsOuterCircle(tempMiddle, tempRadius)) { 
+                        if (tempRadius < radius && this.IsOuterCircle(tempMiddle, tempRadius)) {
                             radius = tempRadius;
-                            middle = tempMiddle; 
+                            middle = tempMiddle;
                         }
                     }
                 }
             }
+            if (radius == Number.MAX_SAFE_INTEGER) console.log("Appropriate outer circle not found");
         }
         
         return {radius:radius, middle:middle};
@@ -129,11 +147,9 @@ class Sprite {
     }
 
     IsOuterCircle(mid, rad) {//vector float
-        this.position.forEach(vec => {
-            if (new Vector2().Distance(vec, mid) > rad) return false;
-        });
+        // 해당 원을 벗어나는 점이 하나라도 존재할 경우 false를 반환한다.
+        return !this.position.some(vec => { return new Vector2().Distance(vec, mid) > rad });
         // foreach (Vector2 vec in pos) if (new Vector2().Distance(vec, mid) > rad) return false;
-        return true;
     }
 
     Gradient(pos1, pos2) { 
