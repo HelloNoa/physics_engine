@@ -1,13 +1,14 @@
-export class Layer {
-    constructor(arg) {
+export const Layer = new class Layer {
+    constructor() {
         this.layer=[];
         this.type=[];
-        arg === 'default' && this.SetDefault();
     }
     GetLayer() {
         return this.layer;
     }
     SetDefault() {
+        this.layer=[];
+        this.type=[];
         this.type.push('background');
         this.type.push('ground');
         this.type.push('sprite');

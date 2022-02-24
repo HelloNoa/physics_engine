@@ -1,6 +1,10 @@
 import {Sprite}  from './sprite.js';
 import {Layer} from './other.js';
 
+import json from './../json/test.js';
+import RandomColor from './randomColor.js';
+console.log(json);
+
 export class Enguine {
     constructor (id) {
         this.ratio = 1;
@@ -8,7 +12,7 @@ export class Enguine {
         this.canvas = document.getElementById(id);
         this.ctx = this.canvas.getContext("2d");
         //이미지 객체 생성
-        var imgClo = new Image()
+        var imgClo = new Image();
         imgClo.src="./is/project_eo.png";
         imgClo.addEventListener('load', ()=>{
             // ctx.drawImage( imgClo , 0, 0, 128/this.ratio, 128/this.ratio);
@@ -30,15 +34,15 @@ export class Enguine {
             this.ddsada();
         },0);
         this.event();
-        this.layer = new Layer('default');
-        this.layer.AddLayer('a');
-        this.layer.AddLayer('b');
-        this.layer.AddLayer('e');
-        this.layer.AddLayer('f');
-        this.layer.AddLayer('g');
-        this.layer.AddLayer('h');
-        this.layer.EffectOneLayer('a','b');
-        console.log(this.layer.GetLayer());
+        Layer.SetDefault();
+        Layer.AddLayer('a');
+        Layer.AddLayer('b');
+        Layer.AddLayer('e');
+        Layer.AddLayer('f');
+        Layer.AddLayer('g');
+        Layer.AddLayer('h');
+        Layer.EffectOneLayer('a','b');
+        console.log(Layer.GetLayer());
     }
     ddsada() {
         this.key.left && this.char.x--;
@@ -70,6 +74,7 @@ export class Enguine {
 
         this.ctx.beginPath();
         // console.log(circle);
+        this.ctx.strokeStyle = RandomColor.random(true);
         this.ctx.arc(circle.middle.x+this.char.x, circle.middle.y+this.char.y, circle.radius, 0, Math.PI * 2);
         this.ctx.stroke();
 
