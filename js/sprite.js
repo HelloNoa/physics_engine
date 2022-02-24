@@ -57,12 +57,37 @@ export class Sprite {
     getPosition() {
         return this.position;
     }
+<<<<<<< HEAD
     GetSpecificCircle(i, j, k) {
         let middle = new Vector2();
         let radius = 0;
         const mid1 = new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2);
         const mid2 = new Vector2().Divide(new Vector2().Plus(this.position[j], this.position[k]), 2);
 
+=======
+    GetSimpleCircle() {
+        let middle = new Vector2();
+        let radius = 0;
+        let length = this.position.length;
+
+        this.position.forEach(vec => {
+            middle = middle.Plus(middle, vec);
+        });
+        middle = middle.Divide(middle, length);
+        this.position.forEach(vec => {
+            let tempRad = middle.Distance(middle, vec);
+            if (tempRad > radius) radius = tempRad;
+        });
+        
+        return {radius:radius, middle:middle};
+    }
+    GetSpecificCircle(i, j, k) {
+        let middle = new Vector2();
+        let radius = 0;
+
+        const mid1 = new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2);
+        const mid2 = new Vector2().Divide(new Vector2().Plus(this.position[j], this.position[k]), 2);
+>>>>>>> origin/HEAD
         const grad1 = -1/this.Gradient(this.position[i], this.position[j]);
         const grad2 = -1/this.Gradient(this.position[j], this.position[k]);
         const tempX = (grad2*mid2.x - grad1*mid1.x - mid2.y + mid1.y)/(grad2 - grad1);
