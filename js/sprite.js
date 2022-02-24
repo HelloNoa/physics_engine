@@ -57,15 +57,18 @@ export class Sprite {
     getPosition() {
         return this.position;
     }
+    /**도형의 무게중심을 중심으로 갖는 가장 작은 외접원을 반환합니다.*/
     GetSimpleCircle() {
         let middle = new Vector2();
         let radius = 0;
         let length = this.position.length;
 
+        // 도형의 무게중심 계산
         this.position.forEach(vec => {
             middle = middle.Plus(middle, vec);
         });
         middle = middle.Divide(middle, length);
+        // 무게중심에서 제일 먼 점까지의 거리 계산
         this.position.forEach(vec => {
             let tempRad = middle.Distance(middle, vec);
             if (tempRad > radius) radius = tempRad;
@@ -73,10 +76,12 @@ export class Sprite {
         
         return {radius:radius, middle:middle};
     }
+    /**i, j, k번째 점으로 이루어진 삼각형의 외접원을 반환합니다.*/
     GetSpecificCircle(i, j, k) {
         let middle = new Vector2();
         let radius = 0;
 
+        // 세 점의 삼각형 외심(삼각형 모든 변의 수직이등분선 교점) 계산
         const mid1 = new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2);
         const mid2 = new Vector2().Divide(new Vector2().Plus(this.position[j], this.position[k]), 2);
         const grad1 = -1/this.Gradient(this.position[i], this.position[j]);
@@ -103,8 +108,7 @@ export class Sprite {
         }
 
         if (!this.IsOuterCircle(middle, radius)) {
-            // 임의의 삼각형 외접원 중 가장 작은 원을 구한다.
-            // radius = float.maxValue;
+            // 임의의 삼각형 외접원 중 가장 작은 원 계산
             radius = Number.MAX_SAFE_INTEGER;
     
             for (let i=0; i<length; i++) {
@@ -135,9 +139,9 @@ export class Sprite {
     distanceD2D(x,y,x1,y1){
         return Math.sqrt(Math.pow(x1-x,2)+Math.pow(y1-y,2));
     }
-
+    /**주어진 원이 다각형을 완전히 덮으면 true를 반환합니다.*/
     IsOuterCircle(mid, rad) {//vector float
-        // 해당 원을 벗어나는 점이 하나라도 존재할 경우 false를 반환한다.
+        // 해당 원을 벗어나는 점이 하나라도 존재할 경우 false를 반환.
         return !this.position.some(vec => { return new Vector2().Distance(vec, mid) > rad });
         // foreach (Vector2 vec in pos) if (new Vector2().Distance(vec, mid) > rad) return false;
     }
