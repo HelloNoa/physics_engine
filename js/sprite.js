@@ -65,7 +65,7 @@ export class Sprite {
         this.position.forEach(vec => {
             middle = middle.Plus(middle, vec);
         });
-        middle.x /= length; middle.y /= length;
+        middle = middle.Divide(middle, length);
         this.position.forEach(vec => {
             let tempRad = middle.Distance(middle, vec);
             if (tempRad > radius) radius = tempRad;
