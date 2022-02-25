@@ -1,6 +1,6 @@
 import {I_Sprite, Sprite}  from './sprite.js';
 import {Layer} from './other.js';
-import {Vector} from './vector.js';
+import {Vector, Vector2} from './vector.js';
 
 import json from './../json/test.js';
 import RandomColor from './randomColor.js';
@@ -15,19 +15,19 @@ interface I_Key{
 interface I_Enguine{
     ratio: number;
     fps: number;
-    canvas: any;
-    ctx: any;
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
     box: I_Sprite[];
-    char: any;
+    char: Sprite;
     key: I_Key;
 }
 export class Enguine implements I_Enguine{
     ratio: number;
     fps: number;
-    canvas: any;
-    ctx: any;
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
     box: I_Sprite[];
-    char: any;
+    char: Sprite;
     key: I_Key;
     constructor (id: string) {
         this.key = {
@@ -38,8 +38,8 @@ export class Enguine implements I_Enguine{
         }
         this.ratio = 1;
         this.fps = 60;
-        this.canvas = document.getElementById(id);
-        this.ctx = this.canvas.getContext("2d");
+        this.canvas = document.getElementById(id) as HTMLCanvasElement;
+        this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
         //이미지 객체 생성
         var imgClo = new Image();
         imgClo.src="./is/project_eo.png";
@@ -85,7 +85,7 @@ export class Enguine implements I_Enguine{
         this.ctx.fillStyle = 'orange';
         this.ctx.strokeStyle = 'orange';
         this.ctx.moveTo(100, 100);
-        this.char.getPosition().forEach((e: Vector, idx:number):void=>{
+        this.char.getPosition().forEach((e: Vector, idx:number): void => {
             if (idx != 0) {
                 this.ctx.lineTo(e.x, e.y);
             }
