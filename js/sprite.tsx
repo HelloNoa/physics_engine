@@ -83,7 +83,7 @@ export class Sprite implements I_Sprite{
     setPosition(positions: Vector[]): void {
         this.position = positions;
     }
-    getPosition(): object[] {
+    getPosition(): Vector[] {
         return this.position;
     }
 
