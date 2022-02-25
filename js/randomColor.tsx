@@ -1,6 +1,12 @@
-export default new class RandomColor {
-    constructor() {
-        this.range = [];
+interface I_RandomColor{
+    range: string[];
+    length: number;
+}
+export default new class RandomColor implements I_RandomColor{
+    range: string[];
+    length: number;
+    constructor(){
+        this.range=[];
         this.range.push('0');
         this.range.push('1');
         this.range.push('2');
@@ -17,14 +23,15 @@ export default new class RandomColor {
         this.range.push('d');
         this.range.push('e');
         this.range.push('f');
+
         this.length = this.range.length;
     }
-    random(bool = false) {
-        let color = '';
-        bool && (color = '#');
-        for (let i = 0; i < 6; i++) {
-            color += this.range[Math.floor(Math.random() * 16)];
+    random(bool: boolean=false): string{
+        let color: string = '';
+        bool && (color='#')
+        for(let i:number = 0; i<6; i++) {
+            color += this.range[Math.floor(Math.random()*16)];
         }
         return color;
     }
-};
+}

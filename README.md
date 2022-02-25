@@ -25,3 +25,6 @@ Go to the folder you want to serve
    or
    
     node server.js
+
+# 타입스크립트 감시모드
+    npx tsc -w
