@@ -54,41 +54,41 @@ export class Sprite {
     //TODO GetCircle에서 사용할 예정
     /**도형의 무게중심을 중심으로 갖는 가장 작은 외접원을 반환합니다.*/
     GetSimpleCircle() {
-        let middle = new Vector2();
+        let mid = new Vector2();
         let radius = 0;
         let length = this.position.length;
         // 도형의 무게중심 계산
         this.position.forEach(vec => {
-            middle = new Vector2().Plus(middle, vec);
+            mid = new Vector2().Plus(mid, vec);
         });
-        middle = new Vector2().Divide(middle, length);
+        mid = new Vector2().Divide(mid, length);
         // 무게중심에서 제일 먼 점까지의 거리 계산
         this.position.forEach(vec => {
-            let tempRad /*: float*/ = new Vector2().Distance(middle, vec);
+            let tempRad = new Vector2().Distance(mid, vec);
             if (tempRad > radius)
                 radius = tempRad;
         });
-        return { radius: radius, middle: middle };
+        return { radius: radius, middle: mid };
     }
     /**i, j, k번째 점으로 이루어진 삼각형의 외접원을 반환합니다.*/
     GetSpecificCircle(i, j, k) {
-        let middle /*: Vector2*/ = new Vector2();
-        let radius /*: float*/ = 0;
+        let middle = new Vector2();
+        let radius = 0;
         // 세 점의 삼각형 외심(삼각형 모든 변의 수직이등분선 교점) 계산
-        const mid1 /*: Vector2*/ = new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2);
-        const mid2 /*: Vector2*/ = new Vector2().Divide(new Vector2().Plus(this.position[j], this.position[k]), 2);
-        const grad1 /*: float*/ = -1 / this.Gradient(this.position[i], this.position[j]);
-        const grad2 /*: float*/ = -1 / this.Gradient(this.position[j], this.position[k]);
-        const tempX /*: float*/ = (grad2 * mid2.x - grad1 * mid1.x - mid2.y + mid1.y) / (grad2 - grad1);
-        const tempY /*: float*/ = grad1 * (tempX - mid1.x) + mid1.y;
+        const mid1 = new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2);
+        const mid2 = new Vector2().Divide(new Vector2().Plus(this.position[j], this.position[k]), 2);
+        const grad1 = -1 / this.Gradient(this.position[i], this.position[j]);
+        const grad2 = -1 / this.Gradient(this.position[j], this.position[k]);
+        const tempX = (grad2 * mid2.x - grad1 * mid1.x - mid2.y + mid1.y) / (grad2 - grad1);
+        const tempY = grad1 * (tempX - mid1.x) + mid1.y;
         middle = new Vector2(tempX, tempY);
         radius = new Vector2().Distance(middle, this.position[i]);
         return { radius: radius, middle: middle };
     }
     GetCircle() {
-        let middle /*: Vector2*/ = new Vector2();
-        let radius /*: float*/ = 0;
-        let length /*: int*/ = this.position.length;
+        let middle = new Vector2();
+        let radius = 0;
+        let length = this.position.length;
         for (let i = 0; i < length; i++) {
             for (let j = i + 1; j < length; j++) {
                 if (new Vector2().Distance(this.position[i], this.position[j]) / 2 > radius) {
@@ -103,14 +103,14 @@ export class Sprite {
             for (let i = 0; i < length; i++) {
                 for (let j = i + 1; j < length; j++) {
                     for (let k = j + 1; k < length; k++) {
-                        const mid1 /*: Vector2*/ = new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2);
-                        const mid2 /*: Vector2*/ = new Vector2().Divide(new Vector2().Plus(this.position[j], this.position[k]), 2);
-                        const grad1 /*: float*/ = -1 / this.Gradient(this.position[i], this.position[j]);
-                        const grad2 /*: float*/ = -1 / this.Gradient(this.position[j], this.position[k]);
-                        const tempX /*: float*/ = (grad2 * mid2.x - grad1 * mid1.x - mid2.y + mid1.y) / (grad2 - grad1);
-                        const tempY /*: float*/ = grad1 * (tempX - mid1.x) + mid1.y;
-                        const tempMiddle /*: Vector2*/ = new Vector2(tempX, tempY);
-                        const tempRadius /*: float*/ = new Vector2().Distance(tempMiddle, this.position[i]);
+                        const mid1 = new Vector2().Divide(new Vector2().Plus(this.position[i], this.position[j]), 2);
+                        const mid2 = new Vector2().Divide(new Vector2().Plus(this.position[j], this.position[k]), 2);
+                        const grad1 = -1 / this.Gradient(this.position[i], this.position[j]);
+                        const grad2 = -1 / this.Gradient(this.position[j], this.position[k]);
+                        const tempX = (grad2 * mid2.x - grad1 * mid1.x - mid2.y + mid1.y) / (grad2 - grad1);
+                        const tempY = grad1 * (tempX - mid1.x) + mid1.y;
+                        const tempMiddle = new Vector2(tempX, tempY);
+                        const tempRadius = new Vector2().Distance(tempMiddle, this.position[i]);
                         if (tempRadius < radius && this.IsOuterCircle(tempMiddle, tempRadius)) {
                             radius = tempRadius;
                             middle = tempMiddle;
