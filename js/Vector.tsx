@@ -31,4 +31,31 @@ export class Vector2 implements I_Vector2{
     Distance(v1: I_Vector2, v2: I_Vector2): number {
         return Math.sqrt(Math.pow(v2.x-v1.x,2)+Math.pow(v2.y-v1.y,2));
     }
+    // 두 2차원 백터의 내적 연산
+    Dot(v1: I_Vector2, v2: I_Vector2): number {
+       return  (v1.x*v2.x)+(v1.y*v2.y);
+    }
+    GetUnitVector2(v: I_Vector2): I_Vector2 {
+        return new Vector2(Math.sqrt(1 - Math.pow(v.y, 2)), Math.sqrt(1 - Math.pow(v.x, 2)));
+    }
+}
+export interface I_Vector3 {
+    x: number;
+    y: number;
+    z: number;
+}
+
+export class Vector3 implements I_Vector3 {
+    x: number;
+    y: number;
+    z: number;
+    constructor(x: number, y: number, z: number) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    // 두 3차원 백터의 외적 연산
+    Cross(v1: I_Vector3, v2: I_Vector3): I_Vector3{
+        return new Vector3((v1.y*v2.z) - (v1.z*v2.y), (v1.z*v2.x) - (v1.x*v2.z), (v1.x*v2.y) - (v1.y*v2.x));
+    }
 }
