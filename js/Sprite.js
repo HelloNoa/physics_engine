@@ -1,12 +1,12 @@
-import { Vector2 } from './vector.js';
-class equation {
+import { Vector2 } from './Vector.js';
+class Equation {
     constructor() {
         this.degree = 0;
         this.a = 0;
         this.c = 0;
     }
 }
-class QuadraticEquation extends equation {
+class QuadraticEquation extends Equation {
     constructor() {
         super();
     }
