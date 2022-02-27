@@ -1,4 +1,5 @@
 import {I_Vector2, Vector2} from './Vector.js';
+import { Polygon } from './type/Polygon.js';
 
 interface I_Equation{
     degree: number;
@@ -180,6 +181,65 @@ export class Sprite implements I_Sprite{
     Gradient(pos1: I_Vector2, pos2: I_Vector2): number { 
         return (pos2.y - pos1.y)/(pos2.x - pos1.x); 
     }
+
+    /**적은 연산으로 두 다각형이 근접했는지 확인합니다.*/
+    IsNear(pol1: Polygon, pol2: Polygon) : boolean {
+        let dist = new Vector2().Distance(pol1.circle.middle, pol2.circle.middle);
+
+        if (dist > pol1.circle.radius + pol2.circle.radius) return false;
+        else return true;
+    }
     
+    /**두 볼록다각형의 충돌을 정밀 판정합니다.*/
+    PolygonCollision(pol1: Polygon, pol2: Polygon) : boolean {
+        for (let i=0; i<pol1.position.length + pol2.position.length; i++) {
+            let side1 = new Vector2().Minus(pol1.position[i], (i < pol1.position.length - 1 ? pol1.position[i+1] : pol1.position[0]));
+
+            // 정사영된 x좌표 범위를 저장하는 변수
+            let range1 = {min : +Infinity, max : -Infinity}, range2 = {min : +Infinity, max : -Infinity};
+            if (side1.y != 0) {
+                // 다각형의 점을 정사영할 직선의 기울기
+                let ang = -side1.x/side1.y;
+
+                pol1.position.forEach((e) => {
+                    let x1 = (e.x + ang*e.y) / (ang*ang + 1);
+                    if (range1.min > x1) range1.min = x1;
+                    if (range1.max < x1) range1.max = x1;
+                });
+                pol2.position.forEach((e) => {
+                    let x2 = (e.x + ang*e.y) / (ang*ang + 1);
+                    if (range2.min > x2) range2.min = x2;
+                    if (range2.max < x2) range2.max = x2;
+                });
+            }
+            else {
+                // 정사영할 직선이 y축에 평행할 경우 (ang = Infinity)
+                pol1.position.forEach((e) => {
+                    if (range1.min > e.y) range1.min = e.y;
+                    if (range1.max < e.y) range1.max = e.y;
+                });
+                pol2.position.forEach((e) => {
+                    if (range2.min > e.y) range2.min = e.y;
+                    if (range2.max < e.y) range2.max = e.y;
+                });
+            }
+            // 임의의 수직선에서 두 범위가 겹치지 않으면 두 다각형은 충돌하지 않는다.
+            if ((range1.max < range2.min) || (range1.min > range2.max)) return false;
+        }
+
+        // 완전 충돌을 가정하여 두 다각형의 질량을 사용해 이동 벡터를 정의한다.
+
+        // collisionAngle_Normalized : 충돌 시 각을 나타내는 단위벡터
+        let colAngleN = new Vector2().Minus(pol2.circle.middle, pol1.circle.middle);
+        let x1 = pol1.velocity.x, y1 = pol1.velocity.y, x2 = pol2.velocity.x, y2 = pol2.velocity.y, cx = colAngleN.x, cy = colAngleN.y;
+        let m1 = pol1.mass, m2 = pol2.mass;
+        // 충돌로 인한 속도 변화를 적용한다. 참고 : https://williamecraver.wixsite.com/elastic-equations
+        pol1.velocity.x = cx*((x1*cx+y1*cy)*(m1-m2) + 2*m2*(x2*cx+y2*cy))/(m1+m2) - cy*(y1*cx-x1*cy);
+        pol1.velocity.y = cy*((x1*cx+y1*cy)*(m1-m2) + 2*m2*(x2*cx+y2*cy))/(m1+m2) - cx*(y1*cx-x1*cy);
+        pol2.velocity.x = cx*((x2*cx+y2*cy)*(m2-m1) + 2*m1*(x1*cx+y1*cy))/(m1+m2) - cy*(y2*cx-x2*cy);
+        pol2.velocity.y = cy*((x2*cx+y2*cy)*(m2-m1) + 2*m1*(x1*cx+y1*cy))/(m1+m2) - cx*(y2*cx-x2*cy);
+
+        return true;
+    }
 }
 
