@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HelloNoa/physics_engine.git"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "HelloNoa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HelloNoa/physics_engine/issues"
+  },
+  "homepage": "https://github.com/HelloNoa/physics_engine#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "fs": "^0.0.1-security",
+    "pg": "^8.7.3"
+  }
+}
