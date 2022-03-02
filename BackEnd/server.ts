@@ -20,8 +20,6 @@ app.use(cors());
 app.use(express.json({ limit : "100mb" })); 
 app.use(express.urlencoded({ limit:"100mb", extended: true }));
 
-
-
 const WebPort = 5051;
 const dbconfig = { 
     host: process.env.HOST, 
@@ -36,32 +34,41 @@ const client = new pg.Client(dbconfig);
 client.connect();
 
 app.post('/getPosition', async(req: any, res: any): Promise<any> => {
-    const sql = "SELECT position from polygon where name = $1"
+    const sql = "SELECT position from polygon where name = $1;"
     const response = await client.query(sql, [req.body.name]);
     return res.send(response.rows[0].position);
 });
 
-app.get('/tt', async(req: any, res: any) => {
-    const sql = "SELECT position from polygon where name = $1";
-    const response = await client.query(sql, ['test']);
-    return res.send(response.rows[0].position);
-});
-
-app.post('/ttp', async(req: any, res: any) => {
-    console.log('ddd');
-    const sql = "INSERT INTO polygon (name, position) VALUES ($1, $2)"
-    await client.query(sql, ['test', 'testest']);
-    return res.json('dd')
-});
-
 app.post('/setPolygon', async(req: any, res: any)=> {
-    const sql = "select * from polygon";
+    const arr = JSON.stringify(req.body.position)
+    const sql = "update polygon set position = $1 where name = 'test';";
+    // const sql = "update polygon set position = $1 where name = $2;";
+    const response = await client.query(sql, [arr]);
+    return res.json({status: 1});
+});
+
+app.post('/allPolygon', async(req: any, res: any)=> {
+    const sql = "select * from polygon;";
     const response = await client.query(sql);
     return res.json(response.rows);
 });
 
-app.post('/allPolygon', async(req: any, res: any)=> {
-    const sql = "select * from polygon";
+app.post('/newPolygon', async(req: any, res: any)=> {
+    const arr = JSON.stringify(req.body.position)
+    const sql = "insert into polygon (id, name, position, updated_at) values ($1, $2, $3, $4);";
+    const response = await client.query(sql,[req.body.id, req.body.name, arr, new Date()]);
+    return res.json(response.rows);
+});
+
+app.post('/removePolygon', async(req: any, res: any)=> {
+    const id = JSON.stringify(req.body.id)
+    const sql = "delete from polygon where id = $1";
+    const response = await client.query(sql,[id]);
+    return res.json(response.rows);
+});
+
+app.get('/lastID', async(req: any, res: any)=> {
+    const sql = "select max(id) from polygon;";
     const response = await client.query(sql);
     return res.json(response.rows);
 });
